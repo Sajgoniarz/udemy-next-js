@@ -37,3 +37,7 @@
 
 # IDE
 .idea
+
+# Prisma DB files
+snippets/prisma/*.db
+snippets/prisma/*.db-journal
