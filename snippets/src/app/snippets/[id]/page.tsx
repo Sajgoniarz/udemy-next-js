@@ -14,7 +14,7 @@ export default async function SnippetEditPage(props: SnippetEditProps){
     });
 
     if(!snippet){
-        return notFound();
+        notFound();
     }
 
     return <div>Edit snippet: {snippet.title}</div>
