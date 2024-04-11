@@ -1,9 +1,9 @@
 import Image from "next/image";
-import {db} from "@/db/client";
+import dbClient from "@/db/client";
 
 export default async function Home() {
 
-    const snippets = await db.snippet.findMany();
+    const snippets = await dbClient.snippet.findMany();
 
     const renderedSnippets = snippets.map(s => (
         <div key={s.id}>{s.title}</div>

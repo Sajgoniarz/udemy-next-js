@@ -1,4 +1,4 @@
-import {db} from "@/db/client";
+import dbClient from "@/db/client";
 import {redirect} from "next/navigation";
 
 export default function SnippetCreatePage() {
@@ -9,7 +9,7 @@ export default function SnippetCreatePage() {
         const title = formData.get("title") as string;
         const code = formData.get("code") as string;
 
-        const createdSnippet = await db.snippet.create({
+        const createdSnippet = await dbClient.snippet.create({
             data: {
                 title, code
             }
