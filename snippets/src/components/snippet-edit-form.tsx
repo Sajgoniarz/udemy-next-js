@@ -1,11 +1,12 @@
 'use client';
 
 import {Snippet} from "@prisma/client";
-import {useState} from "react";
+import {startTransition, useState} from "react";
 import {Editor} from "@monaco-editor/react";
+import {updateSnippet} from "@/actions/snippets";
 
 interface SnippetEditFormProps {
-    snippet: Snippet
+    snippet: Snippet,
 }
 
 export default function SnippetEditForm({snippet}: SnippetEditFormProps) {
@@ -15,18 +16,27 @@ export default function SnippetEditForm({snippet}: SnippetEditFormProps) {
         setCode(value);
     };
 
+    const onUpdateSnippet = () => {
+        startTransition(async () => {
+            await updateSnippet(snippet.id, code);
+        });
+    }
+
     return (
-        <Editor
-            height="40vh"
-            theme="vs-dark"
-            language="JavaScript"
-            defaultValue={snippet.code}
-            onChange={onChange}
-            options={{
-                minimap: {
-                    enabled: false
-                }
-            }}
-        />
+        <>
+            <Editor
+                height="40vh"
+                theme="vs-dark"
+                language="javascript"
+                defaultValue={snippet.code}
+                onChange={onChange}
+                options={{
+                    minimap: {
+                        enabled: false
+                    }
+                }}
+            />
+            <button type="button" className="p-2 border rounded" onClick={onUpdateSnippet}>Update</button>
+        </>
     );
 }
