@@ -1,26 +1,21 @@
-import dbClient from "@/db/client";
-import {redirect} from "next/navigation";
+'use client';
+
+import {createSnippet} from "@/actions/snippets";
+import {useFormState} from "react-dom";
 
 export default function SnippetCreatePage() {
+    const [formState, action] = useFormState(createSnippet, {messages: []});
 
-    async function createSnippet(formData: FormData) {
-        'use server';
+    const renderedMessages =
+        formState.messages.length == 0
+            ? null
+            : <ul className="my-2 p-2 bg-red-200 border rounder border-red-400">
+                {formState.messages.map((message, i) => {
+                    return <li key={i}>{message}</li>
+                })}
+            </ul>
 
-        const title = formData.get("title") as string;
-        const code = formData.get("code") as string;
-
-        const createdSnippet = await dbClient.snippet.create({
-            data: {
-                title, code
-            }
-        });
-
-        console.log(createdSnippet);
-
-        redirect("/");
-    }
-
-    return <form action={createSnippet}>
+    return <form action={action}>
         <h3 className="font-bold m-3">Create a Snippet</h3>
         <div className="flex flex-col gap-4">
             <div className="flex gap-4">
@@ -39,6 +34,7 @@ export default function SnippetCreatePage() {
                     className="border rounded p-2 w-full"
                 />
             </div>
+            {renderedMessages}
             <button type="submit" className="rounded p-2 bg-blue-200">Create</button>
         </div>
     </form>
