@@ -2,6 +2,7 @@
 
 import dbClient from "@/db/client";
 import {redirect} from "next/navigation";
+import {revalidatePath} from "next/cache";
 
 export async function createSnippet(formState: { messages: Array<string> }, formData: FormData) {
 
@@ -35,6 +36,7 @@ export async function createSnippet(formState: { messages: Array<string> }, form
         }
     }
 
+    revalidatePath("/");
     //USE OUTSIDE try-catch. Handled as ERROR by Next...
     redirect("/");
 }
@@ -54,6 +56,8 @@ export async function deleteSnippet(id: number) {
     await dbClient.snippet.delete({
         where: {id},
     });
+
+    revalidatePath("/");
 
     redirect("/");
 }

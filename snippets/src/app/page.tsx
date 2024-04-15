@@ -2,8 +2,6 @@ import Image from "next/image";
 import dbClient from "@/db/client";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
 
     const snippets = await dbClient.snippet.findMany();
