@@ -5,28 +5,37 @@ import {redirect} from "next/navigation";
 
 export async function createSnippet(formState: { messages: Array<string> }, formData: FormData) {
 
-    const title = formData.get("title") as string;
-    const code = formData.get("code") as string;
     const messages: Array<string> = [];
 
-    if (title.length < 3) {
-        messages.push("Title is too short");
-    }
+    try {
+        const title = formData.get("title") as string;
+        const code = formData.get("code") as string;
 
-    if (code.length < 10) {
-        messages.push("Code is too short");
-    }
-
-    if (messages.length) {
-        return {messages};
-    }
-
-    const createdSnippet = await dbClient.snippet.create({
-        data: {
-            title, code
+        if (title.length < 3) {
+            messages.push("Title is too short");
         }
-    });
 
+        if (code.length < 10) {
+            messages.push("Code is too short");
+        }
+
+        await dbClient.snippet.create({
+            data: {
+                title, code
+            }
+        });
+
+    } catch (err: unknown) {
+        err instanceof Error
+            ? messages.push(err.message)
+            : messages.push("Something went wrong...");
+    } finally {
+        if (messages.length) {
+            return {messages};
+        }
+    }
+
+    //USE OUTSIDE try-catch. Handled as ERROR by Next...
     redirect("/");
 }
 
