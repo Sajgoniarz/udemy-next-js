@@ -1,15 +1,18 @@
-﻿import {auth} from "@/auth";
+﻿'use client';
+
 import {Avatar, Button, NavbarItem, Popover, PopoverContent, PopoverTrigger} from "@nextui-org/react";
 import * as actions from "@/actions";
+import React from "react";
+import {useSession} from "next-auth/react";
 
-export default async function UserProfile() {
+export default function UserProfile() {
 
-    const session = await auth();
+    const session = useSession();
 
     const authenticatedUser: React.ReactNode =
         <Popover placement="bottom">
             <PopoverTrigger>
-                <Avatar src={session?.user?.image || ''}/>
+                <Avatar src={session.data?.user?.image || ''}/>
             </PopoverTrigger>
             <PopoverContent>
                 <form action={actions.signOut} className="p-4">
@@ -26,7 +29,7 @@ export default async function UserProfile() {
         </form>;
 
     return (
-        session?.user
+        session?.data?.user
             ? authenticatedUser
             : anonymousUser
     );

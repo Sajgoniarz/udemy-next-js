@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import UserProfile from "@/components/userProfile";
 
-export default async function Header() {
+export default function Header() {
     return (
         <Navbar className="shadow mb-6">
             <NavbarBrand>
