@@ -9,7 +9,7 @@ export default function UserProfile() {
 
     const session = useSession();
 
-    const authenticatedUser: React.ReactNode =
+    const authenticatedUserFragment: React.ReactNode =
         <Popover placement="bottom">
             <PopoverTrigger>
                 <Avatar src={session.data?.user?.image || ''}/>
@@ -21,16 +21,19 @@ export default function UserProfile() {
             </PopoverContent>
         </Popover>
 
-    const anonymousUser: React.ReactNode =
+    const anonymousUserFragment: React.ReactNode =
         <form action={actions.signIn}>
             <NavbarItem>
                 <Button type="submit" color="secondary" variant="bordered">Sign in</Button>
             </NavbarItem>
         </form>;
 
-    return (
-        session?.data?.user
-            ? authenticatedUser
-            : anonymousUser
-    );
+    switch (session.status) {
+        case "loading":
+            return null;
+        case "unauthenticated":
+            return anonymousUserFragment;
+        case "authenticated":
+            return anonymousUserFragment;
+    }
 }
