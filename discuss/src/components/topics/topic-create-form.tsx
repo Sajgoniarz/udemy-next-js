@@ -1,14 +1,14 @@
 ﻿'use client';
 
 import {Button, Input, Popover, PopoverContent, PopoverTrigger, Textarea} from "@nextui-org/react";
-import {useFormState} from 'react-dom';
+import {useFormState, useFormStatus} from 'react-dom';
 import * as actions from "@/actions";
-
+import Submit from "@/components/common/submit";
 export default function TopicCreateForm() {
     const [formState, action] = useFormState(actions.createTopic, {
         errors: {},
     });
-    
+
     return (
         <Popover placement="left">
             <PopoverTrigger>
@@ -43,7 +43,7 @@ export default function TopicCreateForm() {
                             </div>
                             : null
                     }
-                    <Button type="submit">Submit</Button>
+                    <Submit/>
                 </form>
             </PopoverContent>
         </Popover>
