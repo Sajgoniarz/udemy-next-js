@@ -10,7 +10,7 @@ interface PostCreateFormProps {
 }
 
 export default function PostCreateForm({slug}: PostCreateFormProps) {
-    const [formState, action] = useFormState(actions.createPost, {
+    const [formState, action] = useFormState(actions.createPost.bind(null, slug), {
         errors: {},
     });
 

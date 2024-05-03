@@ -17,6 +17,7 @@ interface CreatePostFormState {
 }
 
 export async function createPost(
+    slug: string,
     formState: CreatePostFormState,
     formData: FormData
 ): Promise<CreatePostFormState> {
