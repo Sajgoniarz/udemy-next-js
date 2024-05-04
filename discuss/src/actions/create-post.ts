@@ -43,12 +43,27 @@ export async function createPost(
         }
     }
 
+    const topic = await dbClient.topic.findFirst({
+        where: {
+            slug,
+        }
+    });
+
+    if (!topic) {
+        return {
+            errors: {
+                _form: [`Topic ${slug} could not be found.`],
+            }
+        }
+    }
+
     try {
         post = await dbClient.post.create({
             data: {
                 title: result.data?.title,
                 content: result.data?.content,
-                userId: session.user.id
+                userId: session.user.id,
+                topicId: topic.id,
             }
         });
     } catch (err: unknown) {
@@ -60,6 +75,7 @@ export async function createPost(
             }
         }
     }
-
-    redirect(paths.postShow(post.topicId, post.title));
+    
+    revalidatePath(paths.topicShow(slug));
+    redirect(paths.postShow(slug, post.title));
 }
