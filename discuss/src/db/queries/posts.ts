@@ -27,3 +27,25 @@ export function fetchPostsByTopic(slug: string): Promise<PostForList[]> {
         }
     });
 }
+
+export function fetchTopPosts(): Promise<PostForList[]> {
+    return dbClient.post.findMany({
+        orderBy: {
+            comments: {
+                _count: "desc"
+            }
+        },
+        include: {
+            topic: {
+                select: {slug: true}
+            },
+            user: {
+                select: {name: true}
+            },
+            _count: {
+                select: {comments: true}
+            }
+        },
+        take: 5
+    });
+}
