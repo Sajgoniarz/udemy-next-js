@@ -10,6 +10,7 @@ export type CommentForCommentList =
 };
 
 export function fetchCommentsByPostId(postId: string): Promise<CommentForCommentList[]> {
+    console.log(`Requesting post ${postId}.`);
     return dbClient.comment.findMany({
         where: {
             postId,
