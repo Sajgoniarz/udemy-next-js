@@ -1,5 +1,6 @@
 ﻿import type {Comment} from "@prisma/client";
 import dbClient from "@/db";
+import {cache} from "react";
 
 export type CommentForCommentList =
     Comment & {
@@ -9,7 +10,7 @@ export type CommentForCommentList =
     }
 };
 
-export function fetchCommentsByPostId(postId: string): Promise<CommentForCommentList[]> {
+export const fetchCommentsByPostId = cache((postId: string): Promise<CommentForCommentList[]> => {
     console.log(`Requesting post ${postId}.`);
     return dbClient.comment.findMany({
         where: {
@@ -24,5 +25,4 @@ export function fetchCommentsByPostId(postId: string): Promise<CommentForComment
             },
         },
     });
-}
-
+});
