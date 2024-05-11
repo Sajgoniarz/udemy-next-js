@@ -49,3 +49,30 @@ export function fetchTopPosts(): Promise<PostForList[]> {
         take: 5
     });
 }
+
+export function searchPostsByTerm(term: string): Promise<PostForList[]> {
+    return dbClient.post.findMany({
+        where: {
+            OR: [{
+                title: {
+                    contains: term,
+                }
+            }, {
+                content: {
+                    contains: term,
+                }
+            }]
+        },
+        include: {
+            topic: {
+                select: {slug: true}
+            },
+            user: {
+                select: {name: true}
+            },
+            _count: {
+                select: {comments: true}
+            }
+        }
+    });
+}
